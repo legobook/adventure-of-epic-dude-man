@@ -3,6 +3,7 @@ import random
 from core.settings import *
 from core.tile import Tile
 from core.player import Player
+from core.weapon import Weapon
 
 class Level:
     def __init__(self):
@@ -12,6 +13,9 @@ class Level:
         # Sprite groups
         self.visible_sprites = Camera()
         self.obstacle_sprites = pygame.sprite.Group()
+
+        # Current attack
+        self.current_attack = None
 
         # Map setup
         self.create_map()
@@ -50,7 +54,18 @@ class Level:
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], "object", surf)
         
         # Create player
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack)
+    
+    def create_attack(self):
+        # Create a weapon attack and add it to visible sprites
+        self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def destroy_attack(self):
+        # Remove the current weapon attack if it exists
+        if self.current_attack:
+            self.current_attack.kill()
+
+        self.current_attack = None
 
     def run(self):
         # Update and render game
@@ -68,10 +83,18 @@ class Camera(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
 
+        # Floor setup
+        self.floor_surf = pygame.image.load(get_image_path("floor")).convert()
+        self.floor_rect = self.floor_surf.get_rect(topleft = (0, 0))
+
     def custom_draw(self, player):
         # Calculate offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
+
+        # Draw floor
+        floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf,floor_offset_pos)
 
         # Draw sprites with offset
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):

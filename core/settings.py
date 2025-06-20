@@ -1,12 +1,7 @@
-from csv import reader
 import os
 import pygame
-
-# Game setup
-WIDTH    = 1280	
-HEIGTH   = 720
-FPS      = 60
-TILESIZE = 64
+from csv import reader
+from core.settings import *
 
 def get_image_path(name):
     # Get image path
@@ -42,3 +37,19 @@ def import_folder(name):
             surface_list.append(image_surf)  # Add image surface to list
 
     return surface_list  # Return list of loaded images
+
+
+# Game setup
+WIDTH    = 1280	
+HEIGTH   = 720
+FPS      = 60
+TILESIZE = 64
+
+# Weapon data
+weapon_data = {
+    "sword": {"cooldown": 100, "damage": 15, "graphic": get_image_path("weapons/sword/full")},
+    "lance": {"cooldown": 400, "damage": 30, "graphic": get_image_path("weapons/lance/full")},
+    "axe": {"cooldown": 300, "damage": 20, "graphic": get_image_path("weapons/axe/full")},
+    "rapier": {"cooldown": 50, "damage": 8, "graphic": get_image_path("weapons/rapier/full")},
+    "sai": {"cooldown": 80, "damage": 10, "graphic": get_image_path("weapons/sai/full")}
+}

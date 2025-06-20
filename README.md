@@ -2,6 +2,15 @@
 
 ## Changelog
 
+### Version 5
+
+```
+[+] Added weapon sprites
+[+] Added player weapons animations
+[~] Changed the level rendering method (wip)
+[~] Fixed some indentation mixups
+```
+
 ### Version 4
 
 ```
