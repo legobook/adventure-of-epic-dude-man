@@ -5,6 +5,7 @@ from core.tile import Tile
 from core.player import Player
 from core.weapon import Weapon
 from core.ui import UI
+from core.enemy import Enemy
 
 class Level:
     def __init__(self):
@@ -30,6 +31,7 @@ class Level:
             "boundary": import_csv_layout(get_map_path("floor")),
             "grass": import_csv_layout(get_map_path("grass")),
             "object": import_csv_layout(get_map_path("objects")),
+            "entities": import_csv_layout(get_map_path("entities"))
         }
 
         # Load graphics for grass and objects
@@ -56,10 +58,24 @@ class Level:
                             # Create object tile with corresponding image
                             surf = graphics["objects"][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], "object", surf)
+                        if style == "entities":
+                            # Create player or enemy entity
+                            if col == "394":
+                                self.player = Player(
+                                    (x,y),
+                                    [self.visible_sprites],
+                                    self.obstacle_sprites,
+                                    self.create_attack,
+                                    self.destroy_attack,
+                                    self.create_magic)
+                            else:
+                                # Map entity id to monster name
+                                if col == "390": monster_name = "bamboo"
+                                elif col == "391": monster_name = "spirit"
+                                elif col == "392": monster_name = "raccoon"
+                                else: monster_name = "squid"
+                                Enemy(monster_name,(x,y),[self.visible_sprites],self.obstacle_sprites)
         
-        # Create player
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack, self.create_magic)
-    
     def create_attack(self):
         # Create a weapon attack and add it to visible sprites
         self.current_attack = Weapon(self.player, [self.visible_sprites])
@@ -81,6 +97,7 @@ class Level:
         # Update and render game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.visible_sprites.enemy_update(self.player)
         self.ui.display(self.player)
 
 class Camera(pygame.sprite.Group):
@@ -111,3 +128,11 @@ class Camera(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)
+    
+    def enemy_update(self,player):
+        # Get all enemy sprites
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite,"sprite_type") and sprite.sprite_type == "enemy"]
+        
+        # Call enemy update for each enemy
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)

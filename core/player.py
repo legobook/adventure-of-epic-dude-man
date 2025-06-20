@@ -1,7 +1,8 @@
 import pygame
 from core.settings import *
+from core.entity import Entity
 
-class Player(pygame.sprite.Sprite):
+class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, create_attack, destroy_attack, create_magic):
         # Initialize player
         super().__init__(groups)

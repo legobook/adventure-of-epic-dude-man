@@ -7,6 +7,10 @@ def get_image_path(name):
     # Get image path
     return os.path.join("assets", "images", f"{name}.png")
 
+def get_sound_path(name):
+    # Get sound path
+    return os.path.join("assets", "audio", f"{name}.wav")
+
 def get_map_path(name):
     # Get map path
     return os.path.join("assets", "map", f"{name}.csv")
@@ -75,6 +79,14 @@ weapon_data = {
 
 # Magic data
 magic_data = {
-	"flame": {"strength": 5, "cost": 20, "graphic": get_image_path("particles/flame/fire")},
-	"heal" : {"strength": 20, "cost": 10, "graphic": get_image_path("particles/heal/heal")}
+    "flame": {"strength": 5, "cost": 20, "graphic": get_image_path("particles/flame/fire")},
+    "heal" : {"strength": 20, "cost": 10, "graphic": get_image_path("particles/heal/heal")}
+}
+
+# Enemy data
+monster_data = {
+    "squid": {"health": 100, "exp": 100, "damage": 20, "attack_type": "slash", "attack_sound": get_sound_path("slash"), "speed": 3, "resistance": 3, "attack_radius": 80, "notice_radius": 360},
+    "raccoon": {"health": 300, "exp": 250, "damage": 40, "attack_type": "claw", "attack_sound": get_sound_path("claw"), "speed": 2, "resistance": 3, "attack_radius": 120, "notice_radius": 400},
+    "spirit": {"health": 100, "exp": 110, "damage": 8, "attack_type": "thunder", "attack_sound": get_sound_path("fireball"), "speed": 4, "resistance": 3, "attack_radius": 60, "notice_radius": 350},
+    "bamboo": {"health": 70, "exp": 120, "damage": 6, "attack_type": "leaf_attack", "attack_sound": get_sound_path("slash"), "speed": 3, "resistance": 3, "attack_radius": 50, "notice_radius": 300}
 }

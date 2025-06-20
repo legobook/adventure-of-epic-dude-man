@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### Version 8
+
+```
+[+] Added new entity system
+[+] Added enemy system (with sprites)
+[+] Added audio system
+```
+
 ### Version 7
 
 ```
