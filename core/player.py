@@ -2,13 +2,14 @@ import pygame
 from core.settings import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self,pos,groups,obstacle_sprites):
+	def __init__(self, pos, groups, obstacle_sprites):
 		# Initialize player
 		super().__init__(groups)
 		
         # Player setup
 		self.image = pygame.image.load(get_image_path("player")).convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
+		self.hitbox = self.rect.inflate(0,-26)
 
         # Movement setup
 		self.direction = pygame.math.Vector2()

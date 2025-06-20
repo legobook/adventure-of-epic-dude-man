@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### Version 2
+
+```
+[+] Added dynamic camera that follows the player
+[+] Added better hitboxes to sprites
+[~] Cleaned up code
+```
+
 ### Version 1
 
 ```
