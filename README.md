@@ -2,6 +2,13 @@
 
 ## Changelog
 
+### Version 7
+
+```
+[+] Added a magic system
+[+] Added magic UI, sprites, and animations
+```
+
 ### Version 6
 
 ```

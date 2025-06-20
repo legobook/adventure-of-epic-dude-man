@@ -14,11 +14,16 @@ class UI:
 
         # Load weapon graphics into a list
         self.weapon_graphics = []
+        self.magic_graphics = []
         
         for weapon in weapon_data.values():
-            path = weapon["graphic"]  # Path to weapon image
-            weapon = pygame.image.load(path).convert_alpha()  # Load image with transparency
-            self.weapon_graphics.append(weapon)  # Add to list
+            path = weapon["graphic"]
+            weapon = pygame.image.load(path).convert_alpha()
+            self.weapon_graphics.append(weapon)
+        
+        for magic in magic_data.values():
+            magic = pygame.image.load(magic["graphic"]).convert_alpha()
+            self.magic_graphics.append(magic)
 
     def show_bar(self, current, max_amount, bg_rect, color):
         # Draw background bar
@@ -66,6 +71,17 @@ class UI:
 
         # Draw the weapon sprite
         self.display_surface.blit(weapon_surf, weapon_rect)
+    
+    def magic_overlay(self, magic_index, has_switched):
+        # Draw a box around the magic in the bottom right corner of the screen
+        bg_rect = self.selection_box(80, 635, has_switched)
+        # Load the magic sprite from the list
+        magic_surf = self.magic_graphics[magic_index]
+        # Center the magic sprite in the box
+        magic_rect = magic_surf.get_rect(center=bg_rect.center)
+
+        # Draw the magic sprite
+        self.display_surface.blit(magic_surf, magic_rect)
 
     def display(self, player):
         # Draw the health bar
@@ -78,3 +94,4 @@ class UI:
 
         # Add the weapon overlay in the bottom left corner of the screen
         self.weapon_overlay(player.weapon_index, not player.can_switch_weapon)
+        self.magic_overlay(player.magic_index,not player.can_switch_magic)

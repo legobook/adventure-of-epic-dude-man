@@ -72,3 +72,9 @@ weapon_data = {
     "rapier": {"cooldown": 50, "damage": 8, "graphic": get_image_path("weapons/rapier/full")},
     "sai": {"cooldown": 80, "damage": 10, "graphic": get_image_path("weapons/sai/full")}
 }
+
+# Magic data
+magic_data = {
+	"flame": {"strength": 5, "cost": 20, "graphic": get_image_path("particles/flame/fire")},
+	"heal" : {"strength": 20, "cost": 10, "graphic": get_image_path("particles/heal/heal")}
+}

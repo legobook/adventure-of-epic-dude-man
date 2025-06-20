@@ -58,7 +58,7 @@ class Level:
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], "object", surf)
         
         # Create player
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack)
+        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack, self.create_magic)
     
     def create_attack(self):
         # Create a weapon attack and add it to visible sprites
@@ -70,6 +70,12 @@ class Level:
             self.current_attack.kill()
 
         self.current_attack = None
+    
+    def create_magic(self, style, strength, cost):
+        # Create a magic attack and add it to visible sprites
+        print(style)
+        print(strength)
+        print(cost)
 
     def run(self):
         # Update and render game
