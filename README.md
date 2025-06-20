@@ -2,6 +2,16 @@
 
 ## Changelog
 
+### Version 4
+
+```
+[+] Added extra movement binds (wasd)
+[+] Added player animations
+[+] Added a combat system (doesn't do anything yet)
+[~] Fixed player randomly teleporting on start
+[-] Removed some sprites
+```
+
 ### Version 3
 
 ```
