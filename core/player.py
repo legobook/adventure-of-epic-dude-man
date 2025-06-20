@@ -50,6 +50,11 @@ class Player(Entity):
         self.exp = 123
         self.speed = self.stats["speed"]
 
+        # Damage timer
+        self.vulnerable = True
+        self.hurt_time = None
+        self.invulnerability_duration = 500
+
     def import_player_assets(self):
         # Initialize a dictionary to hold animation frames for each player state
         self.animations = {
@@ -101,8 +106,8 @@ class Player(Entity):
 
                 # Get magic style, strength, and cost
                 style = list(magic_data.keys())[self.magic_index]
-                strength = list(magic_data.values())[self.magic_index]['strength'] + self.stats['magic']
-                cost = list(magic_data.values())[self.magic_index]['cost']
+                strength = list(magic_data.values())[self.magic_index]["strength"] + self.stats["magic"]
+                cost = list(magic_data.values())[self.magic_index]["cost"]
 
                 # Create the magic
                 self.create_magic(style, strength, cost)
@@ -199,6 +204,11 @@ class Player(Entity):
         if not self.can_switch_magic:
             if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_magic = True
+        
+        # Check invulnerability timer
+        if not self.vulnerable:
+            if current_time - self.hurt_time >= self.invulnerability_duration:
+                self.vulnerable = True
 
     def animate(self):
         # Get the current animation frames for the player"s status
@@ -214,6 +224,18 @@ class Player(Entity):
         self.image = animation[int(self.frame_index)]
         # Update the rect to keep the player centered
         self.rect = self.image.get_rect(center=self.hitbox.center)
+
+        # Flicker effect
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+    
+    def get_full_weapon_damage(self):
+        base_damage = self.stats["attack"]
+        weapon_damage = weapon_data[self.weapon]["damage"]
+        return base_damage + weapon_damage
 
     def update(self):
         # Update player

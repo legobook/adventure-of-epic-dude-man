@@ -16,8 +16,10 @@ class Level:
         self.visible_sprites = Camera()
         self.obstacle_sprites = pygame.sprite.Group()
 
-        # Current attack
+        # Attack sprites
         self.current_attack = None
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
 
         # Map setup
         self.create_map()
@@ -59,7 +61,7 @@ class Level:
                             surf = graphics["objects"][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], "object", surf)
                         if style == "entities":
-                            # Create player or enemy entity
+                            # Create a player or an enemy based on the tile number
                             if col == "394":
                                 self.player = Player(
                                     (x,y),
@@ -69,16 +71,22 @@ class Level:
                                     self.destroy_attack,
                                     self.create_magic)
                             else:
-                                # Map entity id to monster name
+                                # Get the name of the monster based on the tile number
                                 if col == "390": monster_name = "bamboo"
                                 elif col == "391": monster_name = "spirit"
-                                elif col == "392": monster_name = "raccoon"
+                                elif col == "392": monster_name ="raccoon"
                                 else: monster_name = "squid"
-                                Enemy(monster_name,(x,y),[self.visible_sprites],self.obstacle_sprites)
+                                # Create an enemy with the given name
+                                Enemy(
+                                    monster_name,
+                                    (x,y),
+                                    [self.visible_sprites,self.attackable_sprites],
+                                    self.obstacle_sprites,
+                                    self.damage_player)
         
     def create_attack(self):
         # Create a weapon attack and add it to visible sprites
-        self.current_attack = Weapon(self.player, [self.visible_sprites])
+        self.current_attack = Weapon(self.player, [self.visible_sprites, self.attack_sprites])
 
     def destroy_attack(self):
         # Remove the current weapon attack if it exists
@@ -86,6 +94,31 @@ class Level:
             self.current_attack.kill()
 
         self.current_attack = None
+    
+    def player_attack_logic(self):
+        # Check for any active attacks
+        if self.attack_sprites:
+            # Iterate through the attack sprites
+            for attack_sprite in self.attack_sprites:
+                # Check for collisions with attackable sprites
+                collision_sprites = pygame.sprite.spritecollide(attack_sprite, self.attackable_sprites, False)
+                if collision_sprites:
+                    # Iterate through the collision sprites
+                    for target_sprite in collision_sprites:
+                        # Check if the target sprite is grass
+                        if target_sprite.sprite_type == "grass":
+                            # Kill the grass sprite
+                            target_sprite.kill()
+                        else:
+                            # Deal damage to the target sprite
+                            target_sprite.get_damage(self.player, attack_sprite.sprite_type)
+
+    def damage_player(self, amount, attack_type):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.hurt_time = pygame.time.get_ticks()
+            # spawn particles
     
     def create_magic(self, style, strength, cost):
         # Create a magic attack and add it to visible sprites
@@ -98,6 +131,7 @@ class Level:
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
+        self.player_attack_logic()
         self.ui.display(self.player)
 
 class Camera(pygame.sprite.Group):

@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### Version 9
+
+```
+[+] Improved the entity system
+[+] Improved the enemy ai
+[+] Added damage interaction between the player and enemies
+```
+
 ### Version 8
 
 ```

@@ -6,6 +6,7 @@ class Weapon(pygame.sprite.Sprite):
         # Initialize tile sprite
         super().__init__(groups)
         direction = player.status.split("_")[0]
+        self.sprite_type = "weapon"
 
         # Weapon setup
         self.image = pygame.image.load(get_image_path(f"weapons/{player.weapon}/{direction}")).convert_alpha()
