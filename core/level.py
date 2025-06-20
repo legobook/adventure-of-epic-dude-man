@@ -4,6 +4,7 @@ from core.settings import *
 from core.tile import Tile
 from core.player import Player
 from core.weapon import Weapon
+from core.ui import UI
 
 class Level:
     def __init__(self):
@@ -19,6 +20,9 @@ class Level:
 
         # Map setup
         self.create_map()
+
+        # User interface
+        self.ui = UI()
 
     def create_map(self):
         # Load map layouts
@@ -71,6 +75,7 @@ class Level:
         # Update and render game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.ui.display(self.player)
 
 class Camera(pygame.sprite.Group):
     def __init__(self):
@@ -84,7 +89,7 @@ class Camera(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
         # Floor setup
-        self.floor_surf = pygame.image.load(get_image_path("floor")).convert()
+        self.floor_surf = pygame.image.load(get_image_path("ground")).convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0, 0))
 
     def custom_draw(self, player):

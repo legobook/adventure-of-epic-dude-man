@@ -19,7 +19,6 @@ class Player(pygame.sprite.Sprite):
 
         # Movement setup
         self.direction = pygame.math.Vector2()
-        self.speed = 5
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
@@ -35,6 +34,13 @@ class Player(pygame.sprite.Sprite):
 
         # Collision setup
         self.obstacle_sprites = obstacle_sprites
+
+        # stats
+        self.stats = {"health": 100, "energy": 60, "attack": 10, "magic": 4, "speed": 5}
+        self.health = self.stats["health"] * 0.5
+        self.energy = self.stats["energy"] * 0.8
+        self.exp = 123
+        self.speed = self.stats["speed"]
 
     def import_player_assets(self):
         # Initialize a dictionary to hold animation frames for each player state
@@ -162,7 +168,7 @@ class Player(pygame.sprite.Sprite):
                 self.can_switch_weapon = True
 
     def animate(self):
-        # Get the current animation frames for the player's status
+        # Get the current animation frames for the player"s status
         animation = self.animations[self.status]
 
         # Increment the frame index for animation speed
@@ -171,7 +177,7 @@ class Player(pygame.sprite.Sprite):
         if self.frame_index >= len(animation):
             self.frame_index = 0
 
-        # Update the player's image to the current animation frame
+        # Update the player"s image to the current animation frame
         self.image = animation[int(self.frame_index)]
         # Update the rect to keep the player centered
         self.rect = self.image.get_rect(center=self.hitbox.center)

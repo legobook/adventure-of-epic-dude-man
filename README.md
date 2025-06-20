@@ -2,6 +2,15 @@
 
 ## Changelog
 
+### Version 6
+
+```
+[+] Added player stats
+[+] Added some UI elements with font
+[~] Fixed the ground
+[-] Removed debugging print statements
+```
+
 ### Version 5
 
 ```
