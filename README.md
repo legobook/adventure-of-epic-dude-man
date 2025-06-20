@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### Version 3
+
+```
+[+] Updated map rendering method
+[+] Added new sprites a ton of new sprites (objects and grass)
+[-] Removed junk code
+```
+
 ### Version 2
 
 ```
